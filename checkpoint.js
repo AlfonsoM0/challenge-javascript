@@ -412,35 +412,32 @@ function direcciones(laberinto) {
   return dir; */
 
   //  Resolución nivel 2: puede estar en un segundo camino, pero los caminos siempre terminan.
-  //  Resolución Nivel DIOS: el laberinto es infinito!
-  let direction = '';
+  //  Resolución Nivel DIOS: el laberinto es de cualquier profundidad y con muchos caminos.
+  let map = '';
 
-  function destinyFinder(obj) {
-    for (const key in obj) {
-      if (obj[key] === 'destino') return true;
-      if (typeof obj[key] === 'object') {
-        const objB = obj[key];
-        if (destinyFinder(objB)) return true;
+  function pathFinder(path) {
+    for (const dir in path) {
+      if (path[dir] === 'destino') return true;
+      if (typeof path[dir] === 'object') {
+        const pathB = path[dir];
+        if (pathFinder(pathB)) return true;
       }
     }
     return false;
   }
 
-  return (function mazeRunner(laberinto) {
-    for (const key in laberinto) {
-      if (laberinto[key] === 'destino') {
-        return (direction += key);
-      } else if (
-        typeof laberinto[key] === 'object' &&
-        destinyFinder(laberinto[key])
-      ) {
-        direction += key;
-        mazeRunner(laberinto[key]);
+  function mazeRunner(path) {
+    for (const dir in path) {
+      if (path[dir] === 'destino') return (map += dir);
+      else if (typeof path[dir] === 'object' && pathFinder(path[dir])) {
+        map += dir;
+        mazeRunner(path[dir]);
       }
     }
+  }
+  mazeRunner(laberinto);
 
-    return direction;
-  })(laberinto);
+  return map;
 }
 console.log(direcciones(laberintoExample));
 console.log(direcciones(laberintoExpert));
