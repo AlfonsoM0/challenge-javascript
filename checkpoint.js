@@ -475,9 +475,9 @@ function deepEqualArrays(arr1, arr2) {
 
   return false;
 }
-console.log(
-  deepEqualArrays([0, 1, [[0, 1, 2], 1, 2]], [0, 1, [[0, 1, 2], 1, 2]])
-);
+const arr1 = [0, 1, [[0, 1, 2], 1, 2]];
+const arr2 = [0, 1, [[0, 1, 2], 1, 2]];
+console.log(deepEqualArrays(arr1, arr2));
 
 // ----- LinkedList -----
 
@@ -745,6 +745,8 @@ console.log('***');
 console.log(primalityTest(-1));
 console.log(primalityTest(0));
 console.log(primalityTest(1));
+console.log('***');
+console.log(primalityTest(1902680207));
 
 //* EJERCICIO 10
 // Implementa el algoritmo conocido como 'quickSort', que dado un arreglo de elemntos
@@ -757,15 +759,14 @@ function quickSort(array) {
   // Retorna el elemento final. Agrega todos los elementos finales en un arreglo.
 
   if (typeof array[0] === 'undefined') return [];
+  if (array.length === 1) return array;
 
   let mayores = [];
   let menores = [];
 
-  if (array.length < 3) {
-    for (let i = 0; i < array.length - 1; i++) {
-      if (array[i] > array[array.length - 1]) mayores.push(array[i]);
-      else menores.push(array[i]);
-    }
+  if (array.length === 2) {
+    if (array[0] > array[1]) mayores.push(array[0]);
+    else menores.push(array[0]);
 
     return [...mayores, array[array.length - 1], ...menores];
   }
@@ -781,7 +782,7 @@ function quickSort(array) {
     ...quickSort(menores),
   ];
 }
-console.log(quickSort([]));
+console.log(quickSort([1]));
 console.log(quickSort([1, 2]));
 console.log(quickSort([2, 5, 9, 3, 4, 7, 1]));
 /*
@@ -811,7 +812,7 @@ menores []
 // 4) Contador para el ciclo => contador.
 
 function reverse(num) {
-  let numMayor = 10;
+  let numMayor = 10; // num debe ser < que 10, 100, 1000, etc.
   while (numMayor < num) {
     numMayor *= 10;
   }
@@ -820,6 +821,7 @@ function reverse(num) {
   let resultado = 0;
   let contador = 10;
 
+  // convierte la unidad en decena, centena, o etc. Según numMayor y contador.
   while (contador < num) {
     resultado += ((numC % 10) * numMayor) / contador;
     numC = (numC - (numC % 10)) / 10; // = Math.floor(num/10)
@@ -828,6 +830,7 @@ function reverse(num) {
 
   return resultado + numC;
 }
+console.log(reverse(12)); // 12 => 20 + 1 = 21
 console.log(reverse(123456789));
 
 // la grandiosa resolucion de Wilson!!!
