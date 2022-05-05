@@ -396,7 +396,7 @@ let laberintoExpert = {
 
 function direcciones(laberinto) {
   //  Resolución nivel 1: siempre está en el primer camino.
-  /*   let dir = '';
+  /*    let dir = '';
 
   for (let prop in laberinto) {
     if (typeof laberinto[prop] === 'object') {
@@ -426,7 +426,7 @@ function direcciones(laberinto) {
     return false;
   }
 
-  function mazeRunner(path) {
+  (function mazeRunner(path) {
     for (const dir in path) {
       if (path[dir] === 'destino') return (map += dir);
       else if (typeof path[dir] === 'object' && pathFinder(path[dir])) {
@@ -434,8 +434,7 @@ function direcciones(laberinto) {
         mazeRunner(path[dir]);
       }
     }
-  }
-  mazeRunner(laberinto);
+  })(laberinto);
 
   return map;
 }
@@ -475,8 +474,8 @@ function deepEqualArrays(arr1, arr2) {
 
   return false;
 }
-const arr1 = [0, 1, [[0, 1, 2], 1, 2]];
-const arr2 = [0, 1, [[0, 1, 2], 1, 2]];
+const arr1 = [[0]]; // -FIX- al comparar [[0]]
+const arr2 = [[0]];
 console.log(deepEqualArrays(arr1, arr2));
 
 // ----- LinkedList -----
@@ -527,17 +526,17 @@ OrderedLinkedList.prototype.add = function (val) {
   let nNode = new Node(val);
   let current = this.head;
 
-  if (!this.head) return (this.head = nNode); // Caso 1: Lista vacía, creamos cabeza.
+  // Caso 1: Lista vacía, creamos cabeza.
+  if (!current) return (this.head = nNode);
 
-  if (val > this.head.value) {
-    // Caso 2: Lista solo cabeza y añadir adelante.
+  // Caso 2: Lista solo cabeza y añadir adelante.
+  if (val > current.value) {
     nNode.next = current;
     return (this.head = nNode);
   }
 
+  // Caso 3: Añadir entre 2 nodos (hay Head y Next).
   while (current.next) {
-    // Caso 3: Añadir entre 2 nodos (hay Head y Next).
-
     current = current.next;
 
     if (val > current.value) {
@@ -547,7 +546,8 @@ OrderedLinkedList.prototype.add = function (val) {
     }
   }
 
-  return (current.next = new Node(val)); //Caso Base: No hay menores, añadir al final en lugar de null.
+  //Caso Base: No hay menores, añadir al final en lugar de null.
+  return (current.next = new Node(val));
 };
 let ll = new OrderedLinkedList();
 ll.add(5);
@@ -725,7 +725,7 @@ console.log(BST.toArray());
 // informarse sobre algoritmos, leerlos de un pseudocodigo e implemnterlos alcanzara
 
 function primalityTest(n) {
-  if (n < 2 || n % 1 > 0) return false;
+  if (n < 2) return false;
   if (n === 2 || n === 3) return true;
 
   if (n > 3 && n % 2 > 0 && n % 3 > 0) return true;
